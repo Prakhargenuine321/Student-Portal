@@ -86,6 +86,10 @@ export default {
           900: '#7f1d1d',
           950: '#450a0a',
         },
+        custom: {
+          'first': 'rgb(255, 62, 48)',
+          'second': 'rgb(65 134 212)'
+        }
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

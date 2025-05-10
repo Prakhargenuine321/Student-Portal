@@ -9,27 +9,24 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [recentResources, setRecentResources] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const fetchRecentResources = async () => {
       try {
         setLoading(true);
-        
-        // Fetch resources from different categories
+
         const [notes, videos, pyqs] = await Promise.all([
           getResources('notes'),
           getResources('videos'),
           getResources('pyqs'),
         ]);
-        
-        // Combine and sort by date
+
         const combined = [
           ...notes.map(item => ({ ...item, type: 'notes' })),
           ...videos.map(item => ({ ...item, type: 'videos' })),
           ...pyqs.map(item => ({ ...item, type: 'pyqs' })),
         ].sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-        
-        // Get most recent 5
+
         setRecentResources(combined.slice(0, 5));
       } catch (error) {
         console.error('Error fetching resources:', error);
@@ -37,11 +34,10 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-    
+
     fetchRecentResources();
   }, []);
-  
-  // Quick access items
+
   const quickAccess = [
     { title: 'Notes', icon: FiBookOpen, color: 'bg-primary-500', link: '/student/notes' },
     { title: 'Syllabus', icon: FiFileText, color: 'bg-secondary-500', link: '/student/syllabus' },
@@ -49,8 +45,7 @@ const Dashboard = () => {
     { title: 'PYQs', icon: FiHelpCircle, color: 'bg-success-500', link: '/student/pyqs' },
     { title: 'Community', icon: FiMessageSquare, color: 'bg-warning-500', link: '/student/community' },
   ];
-  
-  // Format date
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -59,15 +54,14 @@ const Dashboard = () => {
       year: 'numeric',
     });
   };
-  
-  // Card animation variants
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
-  
+
   return (
-    <div className="space-y-6">
+    <div className="pt-16 md:pl-64 px-4 space-y-6 mt-16">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Dashboard</h1>
@@ -76,7 +70,7 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
-      
+
       {/* Quick Access */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -108,7 +102,7 @@ const Dashboard = () => {
           ))}
         </div>
       </motion.div>
-      
+
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Resources */}
         <motion.div
@@ -128,7 +122,7 @@ const Dashboard = () => {
               View all
             </Link>
           </div>
-          
+
           <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
             {loading ? (
               <div className="flex h-48 items-center justify-center">
@@ -186,7 +180,7 @@ const Dashboard = () => {
             )}
           </div>
         </motion.div>
-        
+
         {/* Bookmarks */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -201,7 +195,7 @@ const Dashboard = () => {
               View all
             </button>
           </div>
-          
+
           <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
             <div className="flex h-48 flex-col items-center justify-center text-center">
               <div className="mb-3 rounded-full bg-gray-100 p-3 dark:bg-gray-700">

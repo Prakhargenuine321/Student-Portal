@@ -1,6 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiX, FiHome, FiBookOpen, FiFileText, FiVideo, FiMessageSquare, FiUsers, FiBell, FiHelpCircle } from 'react-icons/fi';
+import {
+  FiX,
+  FiHome,
+  FiBookOpen,
+  FiFileText,
+  FiVideo,
+  FiMessageSquare,
+  FiUsers,
+  FiBell,
+  FiHelpCircle
+} from 'react-icons/fi';
 import { useAuth } from '../../hooks/useAuth';
 
 // Map of icon names to components
@@ -13,13 +23,12 @@ const iconMap = {
   Users: FiUsers,
   Bell: FiBell,
   HelpCircle: FiHelpCircle,
-  //FileQuestion: FiHelpCircle,
 };
 
 const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
   const { user } = useAuth();
   const location = useLocation();
-  
+
   // Animation variants
   const sidebarVariants = {
     open: {
@@ -39,7 +48,7 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
       },
     },
   };
-  
+
   // Get role-specific title and colors
   const getRoleSpecifics = () => {
     switch (userRole) {
@@ -60,14 +69,14 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
         };
       default:
         return {
-          title: 'Smart College',
+          title: 'IET Academix',
           bgClass: 'bg-primary-600',
         };
     }
   };
-  
+
   const { title, bgClass } = getRoleSpecifics();
-  
+
   return (
     <>
       {/* Mobile sidebar backdrop */}
@@ -82,13 +91,13 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
           />
         )}
       </AnimatePresence>
-      
+
       {/* Mobile sidebar */}
       <motion.aside
         variants={sidebarVariants}
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
-        className="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg dark:bg-gray-800 md:hidden"
+        className="fixed top-16 bottom-0 left-0 z-30 w-64 bg-white shadow-lg dark:bg-gray-800 md:hidden"
       >
         <div className={`flex items-center justify-between p-4 ${bgClass} text-white`}>
           <h2 className="text-lg font-semibold">{title}</h2>
@@ -100,7 +109,7 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
             <FiX size={20} />
           </button>
         </div>
-        
+
         <div className="p-4">
           <div className="mb-4 flex items-center">
             <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
@@ -111,12 +120,12 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
               <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>
             </div>
           </div>
-          
+
           <nav className="space-y-1">
             {navigationItems.map((item) => {
               const Icon = iconMap[item.icon] || FiHelpCircle;
               const isActive = location.pathname === item.href;
-              
+
               return (
                 <Link
                   key={item.name}
@@ -135,13 +144,9 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
           </nav>
         </div>
       </motion.aside>
-      
-      {/* Desktop sidebar (always visible) */}
-      <aside className="hidden w-64 border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 md:block">
-        <div className={`flex items-center justify-between p-4 ${bgClass} text-white`}>
-          <h2 className="text-lg font-semibold">{title}</h2>
-        </div>
-        
+
+      {/* Desktop sidebar */}
+      <aside className="hidden md:block fixed top-16 left-0 bottom-0 w-64 border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
         <div className="p-4">
           <div className="mb-4 flex items-center">
             <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
@@ -152,12 +157,12 @@ const Sidebar = ({ navigationItems, userRole, isOpen, onClose }) => {
               <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email}</p>
             </div>
           </div>
-          
+
           <nav className="space-y-1">
             {navigationItems.map((item) => {
               const Icon = iconMap[item.icon] || FiHelpCircle;
               const isActive = location.pathname === item.href;
-              
+
               return (
                 <Link
                   key={item.name}

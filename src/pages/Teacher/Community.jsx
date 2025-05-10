@@ -2,7 +2,7 @@ import Chat from '../../components/common/Chat';
 
 const Community = () => {
   return (
-    <div className="h-full">
+    <div className="h-full ml-64 mt-16">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white md:text-3xl">Teacher Community</h1>
         <p className="text-gray-600 dark:text-gray-400">

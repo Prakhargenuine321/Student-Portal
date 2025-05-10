@@ -1,130 +1,121 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './hooks/useAuth'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './hooks/useAuth';
 
 // Layouts
-import AuthLayout from './layouts/AuthLayout'
-import StudentLayout from './layouts/StudentLayout'
-import TeacherLayout from './layouts/TeacherLayout'
-import AdminLayout from './layouts/AdminLayout'
+import AuthLayout from './layouts/AuthLayout';
+import StudentLayout from './layouts/StudentLayout';
+import TeacherLayout from './layouts/TeacherLayout';
+import AdminLayout from './layouts/AdminLayout';
 
-// Auth Pages
-import Login from './pages/Auth/Login'
-import Register from './pages/Auth/Register'
-
-// Student Pages
-import StudentDashboard from './pages/Student/Dashboard'
-import Notes from './pages/Student/Notes'
-import Syllabus from './pages/Student/Syllabus'
-import Videos from './pages/Student/Videos'
-import PYQs from './pages/Student/PYQs'
-import Community from './pages/Student/Community'
-import PreviewPage from './pages/Student/PreviewPage'
-
-// Teacher Pages
-import TeacherDashboard from './pages/Teacher/Dashboard'
-import TeacherCommunity from './pages/Teacher/Community'
-
-// Admin Pages
-import AdminDashboard from './pages/Admin/Dashboard'
-import ManageNotes from './pages/Admin/ManageNotes'
-import ManageUsers from './pages/Admin/ManageUsers'
-import ManageSyllabus from './pages/Admin/ManageSyllabus'
-import ManageVideos from './pages/Admin/ManageVideos'
-import ManagePYQs from './pages/Admin/ManagePYQs'
-import Announcements from './pages/Admin/Announcements'
-
-// Other Pages
-import NotFound from './pages/NotFound'
-import Unauthorized from './pages/Unauthorized' // Optional component
+// Pages
+import Home from './pages/Home';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import StudentDashboard from './pages/Student/Dashboard';
+import Notes from './pages/Student/Notes';
+import Syllabus from './pages/Student/Syllabus';
+import Videos from './pages/Student/Videos';
+import PYQs from './pages/Student/PYQs';
+import Community from './pages/Student/Community';
+import PreviewPage from './pages/Student/PreviewPage';
+import TeacherDashboard from './pages/Teacher/Dashboard';
+import TeacherCommunity from './pages/Teacher/Community';
+import AdminDashboard from './pages/Admin/Dashboard';
+import ManageNotes from './pages/Admin/ManageNotes';
+import ManageUsers from './pages/Admin/ManageUsers';
+import ManageSyllabus from './pages/Admin/ManageSyllabus';
+import ManageVideos from './pages/Admin/ManageVideos';
+import ManagePYQs from './pages/Admin/ManagePYQs';
+import Announcements from './pages/Admin/Announcements';
+import NotFound from './pages/NotFound';
+import Unauthorized from './pages/Unauthorized';
 
 function App() {
-  const { user, loading } = useAuth()
+  const { user, loading } = useAuth();
 
   const ProtectedRoute = ({ children, allowedRoles }) => {
     if (loading) {
-      return <div className="flex h-screen w-full items-center justify-center">Loading...</div>
+      return <div className="flex h-screen w-full items-center justify-center">Loading...</div>;
     }
 
     if (!user) {
-      return <Navigate to="/login" replace />
+      return <Navigate to="/login" replace />;
     }
 
     if (!allowedRoles.includes(user.role)) {
-      return <div className="p-4 text-center text-red-500 text-lg">You are not authorized to view this page.</div>
-      // OR use a separate page:
-      // return <Unauthorized />;
+      return <Unauthorized />;
     }
 
-    return children
-  }
+    return children;
+  };
 
   return (
     <Routes>
-      {/* Redirect root to login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* ✅ Public Home Page */}
+      <Route path="/" element={<Home key="home" />} />
 
-      {/* Auth Routes */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      {/* ✅ Auth Pages */}
+      <Route element={<AuthLayout key="auth-layout" />}>
+        <Route path="/login" element={<Login key="login" />} />
+        <Route path="/register" element={<Register key="register" />} />
       </Route>
 
-      {/* Student Routes */}
+      {/* ✅ Student Pages */}
       <Route
         path="/student"
         element={
           <ProtectedRoute allowedRoles={['student']}>
-            <StudentLayout />
+            <StudentLayout key="student-layout" />
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<StudentDashboard />} />
-        <Route path="notes" element={<Notes />} />
-        <Route path="syllabus" element={<Syllabus />} />
-        <Route path="videos" element={<Videos />} />
-        <Route path="pyqs" element={<PYQs />} />
-        <Route path="community" element={<Community />} />
-        <Route path="preview/:type/:id" element={<PreviewPage />} />
+        <Route path="dashboard" element={<StudentDashboard key="student-dashboard" />} />
+        <Route path="notes" element={<Notes key="student-notes" />} />
+        <Route path="syllabus" element={<Syllabus key="student-syllabus" />} />
+        <Route path="videos" element={<Videos key="student-videos" />} />
+        <Route path="pyqs" element={<PYQs key="student-pyqs" />} />
+        <Route path="community" element={<Community key="student-community" />} />
+        <Route path="preview/:type/:id" element={<PreviewPage key="preview-page" />} />
         <Route index element={<Navigate to="/student/dashboard" replace />} />
       </Route>
 
-      {/* Teacher Routes */}
+      {/* ✅ Teacher Pages */}
       <Route
         path="/teacher"
         element={
           <ProtectedRoute allowedRoles={['teacher']}>
-            <TeacherLayout />
+            <TeacherLayout key="teacher-layout" />
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<TeacherDashboard />} />
-        <Route path="community" element={<TeacherCommunity />} />
+        <Route path="dashboard" element={<TeacherDashboard key="teacher-dashboard" />} />
+        <Route path="community" element={<TeacherCommunity key="teacher-community" />} />
         <Route index element={<Navigate to="/teacher/dashboard" replace />} />
       </Route>
 
-      {/* Admin Routes */}
+      {/* ✅ Admin Pages */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <AdminLayout />
+            <AdminLayout key="admin-layout" />
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="manage-notes" element={<ManageNotes />} />
-        <Route path="manage-syllabus" element={<ManageSyllabus />} />
-        <Route path="manage-videos" element={<ManageVideos />} />
-        <Route path="manage-pyqs" element={<ManagePYQs />} />
-        <Route path="manage-users" element={<ManageUsers />} />
-        <Route path="announcements" element={<Announcements />} />
+        <Route path="dashboard" element={<AdminDashboard key="admin-dashboard" />} />
+        <Route path="manage-notes" element={<ManageNotes key="admin-manage-notes" />} />
+        <Route path="manage-syllabus" element={<ManageSyllabus key="admin-manage-syllabus" />} />
+        <Route path="manage-videos" element={<ManageVideos key="admin-manage-videos" />} />
+        <Route path="manage-pyqs" element={<ManagePYQs key="admin-manage-pyqs" />} />
+        <Route path="manage-users" element={<ManageUsers key="admin-manage-users" />} />
+        <Route path="announcements" element={<Announcements key="admin-announcements" />} />
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
       </Route>
 
-      {/* Not Found Route */}
-      <Route path="*" element={<NotFound />} />
+      {/* Not Found */}
+      <Route path="*" element={<NotFound key="not-found" />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -31,22 +31,23 @@ const StudentLayout = () => {
   
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar for larger screens */}
+      <Navbar 
+          onMenuClick={() => setSidebarOpen(true)}
+          userRole="student"
+        />
+      
+      
+      {/* Main content */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Sidebar for larger screens */}
       <Sidebar 
         navigationItems={navigationItems}
         userRole="student"
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
-      
-      {/* Main content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Navbar 
-          onMenuClick={() => setSidebarOpen(true)}
-          userRole="student"
-        />
         
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
